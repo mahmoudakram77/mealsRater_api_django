@@ -11,6 +11,17 @@ class Meal(models.Model):
     title = models.CharField(max_length=23, null=False)
     description = models.TextField(max_length=360 , null=False) 
 
+    def no_of_rating(self):
+        ratings = Rating.objects.filter(meal=self)
+        return len(ratings)
+    def avg_rating(self):
+        ratings = Rating.objects.filter(meal=self)
+        total_stars = sum(rating.stars for rating in ratings)
+        if len(ratings) > 0:
+            return total_stars / len(ratings)
+        else:
+            return 0
+
     def __str__(self):
         return self.title
     
